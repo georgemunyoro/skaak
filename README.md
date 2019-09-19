@@ -1,4 +1,4 @@
-# Python-Chess-Engine
+# Skai : Python-Chess-Engine
 
 ******************************************
 This is a chess ai/engine built in python.
