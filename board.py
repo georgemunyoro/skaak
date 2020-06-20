@@ -584,16 +584,3 @@ class Chessboard(object):
 					clean_fen += char
 
 		return clean_fen
-
-board = Chessboard()
-board.reset_board_position()
-board.def_piece_colors()
-
-# x = board.calc_piece_pos_moves('p', 'd2', 'w')
-# board.highlight_moves(x)
-# board.draw_ascii()
-
-# all_moves = board.legal_moves()
-# print('')
-# gen_fen = board.create_fen()
-# print(gen_fen)
