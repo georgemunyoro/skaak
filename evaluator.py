@@ -116,11 +116,3 @@ class Evaluator(object):
 		moves = self.legal_moves_of_color(fen, color)
 		moves = self.randomize_list(moves)
 		return moves[0]
-
-board = Chessboard()
-board.position('rnbqkbnr/ppppQppp/8/8/8/8/PPPP1PPP/RNB1KBNR')
-board_eval = Evaluator(board)
-score = board_eval.calc_pos(board.fen, 'w')
-
-x = board_eval.randomMove(board.fen, 'w')
-print(x)
