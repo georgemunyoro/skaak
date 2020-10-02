@@ -5,11 +5,12 @@ import re
 import math
 
 class Chessboard(object):
-	def __init__(self):
+    STARTING_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
+
+	def __init__(self, fen=Chessboard.STARTING_FEN):
 		self.board_index = {}
 		self.files = 'abcdefgh'
-		self.starting_pos_fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
-		self.fen = None
+		self.fen = fen
 
 		# - Initializing functions
 		self.init()
@@ -70,7 +71,7 @@ class Chessboard(object):
 		print('        a    b    c    d    e    f    g    h'.upper())
 
 	def reset_board_position(self):
-		self.position(self.starting_pos_fen)
+		self.position(Chessboard.STARTING_FEN)
 
 	def get_ref_from_index(self, index):
 		for square in self.board_index:
