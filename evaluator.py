@@ -65,6 +65,7 @@ class Evaluator(object):
         return board_score
 
     T = t.TypeVar("T")
+
     def randomize_list(self, the_list: t.List[T]) -> t.List[T]:
         index = 0
 
