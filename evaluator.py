@@ -26,7 +26,14 @@ class Evaluator(object):
         return color_pos_moves
 
     def piece_value(self, piece) -> int:
-        values = {"p": 100, "n": 350, "b": 350, "r": 525, "q": 1000, "k": 10000}
+        values = {
+            "p": 100,
+            "n": 350,
+            "b": 350,
+            "r": 525,
+            "q": 1000,
+            "k": 10000
+        }
         piece = piece.lower()
         return values[piece]
 
@@ -86,9 +93,8 @@ class Evaluator(object):
         print(white_score - black_score)
         print("--")
 
-        return (
-            white_score - black_score if (color == "w") else black_score - white_score
-        )
+        return (white_score - black_score if
+                (color == "w") else black_score - white_score)
 
     def find_move(self, fen, color) -> int:
         self.board.position(fen)
