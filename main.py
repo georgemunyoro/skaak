@@ -7,8 +7,8 @@
 #
 ###########################################################
 
-from evaluator import Evaluator
 from board import Chessboard
+from evaluator import Evaluator
 
 board = Chessboard()
 evaluator = Evaluator(board)

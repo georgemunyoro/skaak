@@ -1,10 +1,11 @@
 # - George Guvamatanga
 # - 18 September 2019
 
-import typing as t
-import re
 import math
 import random
+import re
+import typing as t
+
 from board import Chessboard
 
 

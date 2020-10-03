@@ -1,9 +1,9 @@
 # - George Guvamatanga
 # - 16 September 2019
 
-import typing as t
-import re
 import math
+import re
+import typing as t
 
 
 class Chessboard(object):
