@@ -153,11 +153,11 @@ class Chessboard(object):
             color = self.board_index[str(square)]["color"]
             possible_moves = self.calc_piece_pos_moves(piece, str(square), color)
             for move in possible_moves:
-                move_obect = {
+                move_object = {
                     "origin": "{origin}".format(origin=str(square)),
                     "dest": "{dest}".format(dest=str(move)),
                 }
-                moves.append(move_obect)
+                moves.append(move_object)
         return moves
 
     def calc_piece_pos_moves(self, piece, pos, color):

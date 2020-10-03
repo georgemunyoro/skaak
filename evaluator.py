@@ -5,15 +5,17 @@ import re
 import math
 import random
 from board import Chessboard
+from typing import List
+
 
 class Evaluator(object):
-	def __init__(self, board):
+	def __init__(self, board : Chessboard):
 		self.board = board
 		
 		# initiates board in case of error:
 		self.board.init()
 
-	def legal_moves_of_color(self, fen, color):
+	def legal_moves_of_color(self, fen, color) -> List[str]:
 		all_moves = self.board.calc_board_position_pos_moves(fen)
 		color_pos_moves = []
 		for move in all_moves:
@@ -23,21 +25,12 @@ class Evaluator(object):
 
 		return color_pos_moves
 
-	def piece_value(self, piece):
-		if(piece == 'p' or piece == 'P'):
-			return 100
-		elif(piece == 'n' or piece == 'N'):
-			return 350
-		elif(piece == 'b' or piece == 'B'):
-			return 350
-		elif(piece == 'r' or piece == 'R'):
-			return 525
-		elif(piece == 'q' or piece == 'Q'):
-			return 1000
-		elif(piece == 'k' or piece == 'K'):
-			return 10000
+	def piece_value(self, piece) -> int:
+		values = {'p':100,'n':350,'b':350,'r':525,'q':1000,'k':10000}
+		piece = piece.lower()
+		return values[piece]
 
-	def piece_color(self, piece):
+	def piece_color(self, piece) -> str:
 		if(piece==None or piece==''):
 			return None
 		if(re.match('[a-z]+', str(piece))):
@@ -45,7 +38,7 @@ class Evaluator(object):
 		elif(re.match('[A-Z]+', str(piece))):
 			return 'w'
 
-	def calc_pos(self, fen, color):
+	def calc_pos(self, fen, color) -> int:
 		self.board.position(fen)
 		self.board.def_piece_colors()
 
@@ -58,7 +51,7 @@ class Evaluator(object):
 
 		return board_score
 
-	def randomize_list(self, list):
+	def randomize_list(self, list) -> List[int]:
 		index = 0
 
 		completed = []
@@ -78,7 +71,7 @@ class Evaluator(object):
 			random_list.append(list[ref])
 		return random_list
 
-	def rate_move_rel(self, fen, color):
+	def rate_move_rel(self, fen, color) -> int:
 		opponent = None
 		
 		if (color == 'w'): opponent = 'b'
@@ -91,10 +84,9 @@ class Evaluator(object):
 		print(white_score - black_score)
 		print('--')
 
-		if (color == 'w'): return white_score - black_score
-		else: return black_score - white_score
+		return white_score - black_score if(color == 'w') else black_score - white_score
 
-	def find_move(self, fen, color):
+	def find_move(self, fen, color) -> int:
 		self.board.position(fen)
 
 		og_pos = fen
@@ -112,7 +104,7 @@ class Evaluator(object):
 
 		return best_move_so_far
 
-	def randomMove(self, fen, color):
+	def randomMove(self, fen, color) -> int:
 		moves = self.legal_moves_of_color(fen, color)
 		moves = self.randomize_list(moves)
 		return moves[0]
