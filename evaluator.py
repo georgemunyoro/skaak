@@ -19,25 +19,24 @@ class Evaluator(object):
         all_moves = self.board.calc_board_position_pos_moves(fen)
         color_pos_moves = []
         for move in all_moves:
-            origin = move['origin']
-            if(self.board.board_index[origin]['color'] == color):
+            origin = move["origin"]
+            if self.board.board_index[origin]["color"] == color:
                 color_pos_moves.append(move)
 
         return color_pos_moves
 
     def piece_value(self, piece) -> int:
-        values = {'p': 100, 'n': 350, 'b': 350,
-                  'r': 525, 'q': 1000, 'k': 10000}
+        values = {"p": 100, "n": 350, "b": 350, "r": 525, "q": 1000, "k": 10000}
         piece = piece.lower()
         return values[piece]
 
     def piece_color(self, piece) -> str:
-        if(piece == None or piece == ''):
+        if piece == None or piece == "":
             return None
-        if(re.match('[a-z]+', str(piece))):
-            return 'b'
-        elif(re.match('[A-Z]+', str(piece))):
-            return 'w'
+        if re.match("[a-z]+", str(piece)):
+            return "b"
+        elif re.match("[A-Z]+", str(piece)):
+            return "w"
 
     def calc_pos(self, fen, color) -> int:
         self.board.position(fen)
@@ -46,8 +45,8 @@ class Evaluator(object):
         board_score = 0
 
         for square in self.board.board_index:
-            if(self.board.board_index[square]['color'] == color):
-                piece_type = self.board.board_index[square]['type']
+            if self.board.board_index[square]["color"] == color:
+                piece_type = self.board.board_index[square]["type"]
                 board_score += self.piece_value(piece_type)
 
         return board_score
@@ -58,9 +57,9 @@ class Evaluator(object):
         completed = []
         random_list = []
 
-        while(index != len(list)):
+        while index != len(list):
             curr_random_item_index = int(random.randrange(0, len(list)))
-            if(curr_random_item_index in completed):
+            if curr_random_item_index in completed:
                 pass
             else:
                 # random_list[curr_random_item_index] = list[index]
@@ -75,19 +74,21 @@ class Evaluator(object):
     def rate_move_rel(self, fen, color) -> int:
         opponent = None
 
-        if (color == 'w'):
-            opponent = 'b'
+        if color == "w":
+            opponent = "b"
         else:
-            opponent = 'w'
+            opponent = "w"
 
-        white_score = self.calc_pos(fen, 'w')
-        black_score = self.calc_pos(fen, 'b')
+        white_score = self.calc_pos(fen, "w")
+        black_score = self.calc_pos(fen, "b")
 
-        print('SCORE : ')
+        print("SCORE : ")
         print(white_score - black_score)
-        print('--')
+        print("--")
 
-        return white_score - black_score if(color == 'w') else black_score - white_score
+        return (
+            white_score - black_score if (color == "w") else black_score - white_score
+        )
 
     def find_move(self, fen, color) -> int:
         self.board.position(fen)
@@ -99,8 +100,8 @@ class Evaluator(object):
         best_move_score = -1
 
         for move in self.randomize_list(self.legal_moves_of_color(fen, color)):
-            self.board.move(move['origin'], move['dest'])
-            if(self.rate_move_rel(self.board.fen, color) > best_move_score):
+            self.board.move(move["origin"], move["dest"])
+            if self.rate_move_rel(self.board.fen, color) > best_move_score:
                 best_move_score = self.rate_move_rel(self.board.fen, color)
                 best_move_so_far = move
             self.board.position(og_pos)
