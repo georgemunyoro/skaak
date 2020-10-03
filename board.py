@@ -2,6 +2,7 @@
 # - 16 September 2019
 
 import typing as t
+
 import re
 import math
 
@@ -10,6 +11,8 @@ class Chessboard(object):
     STARTING_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
 
     def __init__(self, fen: str = Chessboard.STARTING_FEN) -> None:
+       
+    def __init__(self, fen: str = STARTING_FEN) -> None:
         self.board_index: t.Dict[str, t.Dict[str, t.Union[None, str, int]]] = {}
         self.files = "abcdefgh"
         self.fen = fen
@@ -35,19 +38,15 @@ class Chessboard(object):
                 break
 
             square_ref = "{file}{rank}".format(file=square_file, rank=square_rank)
-            self.board_index[square_ref] = {
-                "index": square_index,
-                "color": None,
-                "type": None,
-            }
+
+            self.board_index[square_ref] = {"index": square_index, "color": None, "type": None}
 
             if file_index % 8 == 0:
                 file_index = 1
             else:
                 file_index += 1
 
-            square_index += 1
-
+            square_index
     def get_rank_squares(self, rank: int) -> t.List[str]:
         squares: t.List[str] = []
         for square in self.board_index:
@@ -74,9 +73,7 @@ class Chessboard(object):
         while rank_index >= 1:
             print("")
             print(
-                "{rank}   |   {rank_drawing}".format(
-                    rank=rank_index, rank_drawing=self.draw_rank(rank_index)
-                )
+                "{rank}   |   {rank_drawing}".format(rank=rank_index, rank_drawing=self.draw_rank(rank_index))
             )
             print("")
             rank_index -= 1
@@ -151,15 +148,11 @@ class Chessboard(object):
             if move == None:
                 pass
             else:
-                if (
-                    self.board_index[str(origin)]["color"]
-                    == self.board_index[str(move)]["color"]
-                ):
+                if self.board_index[str(origin)]["color"] == self.board_index[str(move)]["color"]:
                     pass
                 else:
                     clean_moves.append(str(move))
-        return clean_moves
-
+        return clean_m
     def calc_board_position_pos_moves(self, fen: str) -> t.List[t.Dict[str, str]]:
         moves: t.List[t.Dict[str, str]] = []
         self.position(fen)
@@ -177,7 +170,6 @@ class Chessboard(object):
 
     def calc_piece_pos_moves(self, piece: str, pos: str, color: str) -> t.List[t.Optional[str]]:
         possible_moves: t.List[t.Optional[str]] = []
-
         # - Calculates moves for a knight (N / n)
         if piece == "n" or piece == "N":
             position_index = int(self.board_index[pos]["index"])  # type: ignore
@@ -471,7 +463,6 @@ class Chessboard(object):
         # - Calculates moves for a king (K / k)
         if piece == "k" or piece == "K":
             square_index = int(self.board_index[pos]["index"])  # type: ignore
-
             possible_moves.append(self.get_ref_from_index(square_index - 9))
             possible_moves.append(self.get_ref_from_index(square_index - 8))
             possible_moves.append(self.get_ref_from_index(square_index - 7))
@@ -503,7 +494,7 @@ class Chessboard(object):
 
             # safe_possible_moves = []
             possible_moves = self.clean_moves(pos, possible_moves)  # type: ignore
-
+            
             # 	for move in possible_moves:
             # 		if(self.safe(move)): safe_possible_moves.append(move)
 
@@ -522,77 +513,51 @@ class Chessboard(object):
                 r_diag = None
 
                 if pos[1] != "8":
-                    if pos[0] != "a":
-                        l_diag: int = int(self.board_index[pos]["index"]) - 9  # type: ignore
+                    if pos[0 != "a"]:
+                        l_diag = int(self.board_index[pos]["index"]) - 9 # type: ignore
 
-                    if pos[0] != "h":
-                        r_diag: int = int(self.board_index[pos]["index"]) - 7  # type: ignore
+                    if pos[0 != "h"]:
+                        r_diag = int(self.board_index[pos]["index"]) - 7 # type: ignore
 
-                l_diag = self.get_ref_from_index(l_diag)  # type: ignore
-                r_diag = self.get_ref_from_index(r_diag)  # type: ignore
+                l_diag = self.get_ref_from_index(l_diag)
+                r_diag = self.get_ref_from_index(r_diag)
 
                 if pos[1] == "2":
                     if (
-                        self.board_index[self.get_ref_from_index(two_ahead_index)][
-                            "type"
-                        ]
-                        == None
-                        and self.board_index[self.get_ref_from_index(one_ahead_index)][
-                            "type"
-                        ]
-                        == None
+                        self.board_index[self.get_ref_from_index(two_ahead_index)]["type"] == None
+                        and self.board_index[self.get_ref_from_index(one_ahead_index)]["type"] == None
                     ):
                         possible_moves.append(self.get_ref_from_index(one_ahead_index))
                         possible_moves.append(self.get_ref_from_index(two_ahead_index))
                         return possible_moves
                     elif (
-                        self.board_index[self.get_ref_from_index(two_ahead_index)][
-                            "type"
-                        ]
-                        != None
-                        and self.board_index[self.get_ref_from_index(one_ahead_index)][
-                            "type"
-                        ]
-                        == None
+                        self.board_index[self.get_ref_from_index(two_ahead_index)]["type"] != None
+                        and self.board_index[self.get_ref_from_index(one_ahead_index)]["type"] == None
                     ):
                         possible_moves.append(self.get_ref_from_index(one_ahead_index))
                         return possible_moves
                     elif (
-                        self.board_index[self.get_ref_from_index(two_ahead_index)][
-                            "type"
-                        ]
-                        == None
-                        and self.board_index[self.get_ref_from_index(one_ahead_index)][
-                            "type"
-                        ]
-                        != None
+                        self.board_index[self.get_ref_from_index(two_ahead_index)]["type"] == None
+                        and self.board_index[self.get_ref_from_index(one_ahead_index)]["type"] != None
                     ):
                         return []
                 if r_diag != None:
                     if (
-                        self.board_index[r_diag]["color"]
-                        != self.board_index[pos]["color"]
+                        self.board_index[r_diag]["color"] != self.board_index[pos]["color"]
                         and self.board_index[r_diag]["type"] != None
                     ):
                         possible_moves.append(r_diag)
 
                 if l_diag != None:
                     if (
-                        self.board_index[l_diag]["color"]
-                        != self.board_index[pos]["color"]
+                        self.board_index[l_diag]["color"] != self.board_index[pos]["color"]
                         and self.board_index[l_diag]["type"] != None
                     ):
                         possible_moves.append(l_diag)
 
-                if (
-                    self.board_index[self.get_ref_from_index(one_ahead_index)]["type"]
-                    == None
-                ):
+                if self.board_index[self.get_ref_from_index(one_ahead_index)]["type"] == None:
                     possible_moves.append(self.get_ref_from_index(one_ahead_index))
-                elif (
-                    self.board_index[self.get_ref_from_index(one_ahead_index)]["type"]
-                    != None
-                ):
+                elif self.board_index[self.ge
                     return []
             elif color == "b":
 
@@ -603,82 +568,57 @@ class Chessboard(object):
                 r_diag = None
 
                 if pos[1] != "1":
-                    if pos[0] != "a":
-                        l_diag = int(self.board_index[pos]["index"]) + 7  # type: ignore
+                    if pos[0 != "a"]:
+                        l_diag = int(self.board_index[pos]["index"]) + 7 # type: ignore
 
-                    if pos[0] != "h":
-                        r_diag = int(self.board_index[pos]["index"]) + 9  # type: ignore
+                    if pos[0 != "h"]:
+                        r_diag = int(self.board_index[pos]["index"]) + 9 # type: ignore
 
-                l_diag = self.get_ref_from_index(l_diag)  # type: ignore
-                r_diag = self.get_ref_from_index(r_diag)  # type: ignore
+                l_diag = self.get_ref_from_index(l_diag)
+                r_diag = self.get_ref_from_index(r_diag)
 
                 if pos[1] == "7":
                     if (
-                        self.board_index[self.get_ref_from_index(two_ahead_index)][
-                            "type"
-                        ]
-                        == None
-                        and self.board_index[self.get_ref_from_index(one_ahead_index)][
-                            "type"
-                        ]
-                        == None
+                        self.board_index[self.get_ref_from_index(two_ahead_index)]["type"] == None
+                        and self.board_index[self.get_ref_from_index(one_ahead_index)]["type"] == None
                     ):
                         possible_moves.append(self.get_ref_from_index(one_ahead_index))
                         possible_moves.append(self.get_ref_from_index(two_ahead_index))
                         return possible_moves
                     elif (
-                        self.board_index[self.get_ref_from_index(two_ahead_index)][
-                            "type"
-                        ]
-                        != None
-                        and self.board_index[self.get_ref_from_index(one_ahead_index)][
-                            "type"
-                        ]
-                        == None
+                        self.board_index[self.get_ref_from_index(two_ahead_index)]["type"] != None
+                        and self.board_index[self.get_ref_from_index(one_ahead_index)]["type"] == None
                     ):
                         possible_moves.append(self.get_ref_from_index(one_ahead_index))
                         return possible_moves
                     elif (
-                        self.board_index[self.get_ref_from_index(two_ahead_index)][
-                            "type"
-                        ]
-                        == None
-                        and self.board_index[self.get_ref_from_index(one_ahead_index)][
-                            "type"
-                        ]
-                        != None
+                        self.board_index[self.get_ref_from_index(two_ahead_index)]["type"] == None
+                        and self.board_index[self.get_ref_from_index(one_ahead_index)]["type"] != None
                     ):
                         return []
                 if r_diag != None:
                     if (
-                        self.board_index[r_diag]["color"]
-                        != self.board_index[pos]["color"]
+                        self.board_index[r_diag]["color"] != self.board_index[pos]["color"]
                         and self.board_index[r_diag]["type"] != None
                     ):
                         possible_moves.append(r_diag)
 
                 if l_diag != None:
                     if (
-                        self.board_index[l_diag]["color"]
-                        != self.board_index[pos]["color"]
+                        self.board_index[l_diag]["color"] != self.board_index[pos]["color"]
                         and self.board_index[l_diag]["type"] != None
                     ):
                         possible_moves.append(l_diag)
 
-                if (
-                    self.board_index[self.get_ref_from_index(one_ahead_index)]["type"]
-                    == None
-                ):
+                if self.board_index[self.get_ref_from_index(one_ahead_index)]["type"] == None:
                     possible_moves.append(self.get_ref_from_index(one_ahead_index))
-                elif (
-                    self.board_index[self.get_ref_from_index(one_ahead_index)]["type"]
-                    != None
-                ):
+                elif self.board_index[self.get_ref_from_index(one_ahead_index)]["type"] != None:
                     return []
 
-        return self.clean_moves(pos, possible_moves)  # type: ignore
+        possible_moves = self.clean_moves(pos, possible_moves)  # type: ignore
+        return possible_moves
 
-    def safe(self, square: str) -> bool:
+    def safe(self, square):
         attacked_squares = self.legal_moves()
         for i in attacked_squares:
             if square == i:
@@ -694,12 +634,7 @@ class Chessboard(object):
         return legal_moves
 
     def is_edge_square(self, square: str) -> bool:
-        if (
-            str(square)[0] == "a"
-            or str(square)[0] == "h"
-            or str(square)[1] == "8"
-            or str(square)[1] == "1"
-        ):
+        if str(square)[0] == "a" or str(square)[0] == "h" or str(square)[1] == "8" or str(square)[1] == "1":
             return True
         else:
             return False
