@@ -1,11 +1,12 @@
 # - George Guvamatanga
 # - 18 September 2019
 
-import re
 import math
 import random
-from board import Chessboard
+import re
 from typing import List
+
+from board import Chessboard
 
 
 class Evaluator(object):
