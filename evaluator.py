@@ -15,7 +15,8 @@ class Evaluator(object):
         # initiates board in case of error:
         self.board.init()
 
-    def legal_moves_of_color(self, fen: str, color: str) -> t.List[t.Dict[str, str]]:
+    def legal_moves_of_color(self, fen: str,
+                             color: str) -> t.List[t.Dict[str, str]]:
         all_moves = self.board.calc_board_position_pos_moves(fen)
         color_pos_moves = []
         for move in all_moves:
