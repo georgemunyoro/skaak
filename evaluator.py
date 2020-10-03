@@ -1,6 +1,7 @@
 # - George Guvamatanga
 # - 18 September 2019
 
+import typing as t
 import re
 import math
 import random
@@ -8,13 +9,13 @@ from board import Chessboard
 
 
 class Evaluator(object):
-    def __init__(self, board):
+    def __init__(self, board: Chessboard) -> None:
         self.board = board
 
         # initiates board in case of error:
         self.board.init()
 
-    def legal_moves_of_color(self, fen, color):
+    def legal_moves_of_color(self, fen: str, color: str) -> t.List[t.Dict[str, str]]:
         all_moves = self.board.calc_board_position_pos_moves(fen)
         color_pos_moves = []
         for move in all_moves:
@@ -24,7 +25,7 @@ class Evaluator(object):
 
         return color_pos_moves
 
-    def piece_value(self, piece):
+    def piece_value(self, piece: str) -> int:
         if piece == "p" or piece == "P":
             return 100
         elif piece == "n" or piece == "N":
@@ -37,8 +38,10 @@ class Evaluator(object):
             return 1000
         elif piece == "k" or piece == "K":
             return 10000
+        else:
+            return 0
 
-    def piece_color(self, piece):
+    def piece_color(self, piece: str) -> t.Optional[str]:
         if piece == None or piece == "":
             return None
         if re.match("[a-z]+", str(piece)):
@@ -46,7 +49,9 @@ class Evaluator(object):
         elif re.match("[A-Z]+", str(piece)):
             return "w"
 
-    def calc_pos(self, fen, color):
+        return None
+
+    def calc_pos(self, fen: str, color: str) -> int:
         self.board.position(fen)
         self.board.def_piece_colors()
 
@@ -55,18 +60,19 @@ class Evaluator(object):
         for square in self.board.board_index:
             if self.board.board_index[square]["color"] == color:
                 piece_type = self.board.board_index[square]["type"]
-                board_score += self.piece_value(piece_type)
+                board_score += self.piece_value(piece_type)  # type: ignore
 
         return board_score
 
-    def randomize_list(self, list):
+    T = t.TypeVar("T")
+    def randomize_list(self, the_list: t.List[T]) -> t.List[T]:
         index = 0
 
         completed = []
         random_list = []
 
-        while index != len(list):
-            curr_random_item_index = int(random.randrange(0, len(list)))
+        while index != len(the_list):
+            curr_random_item_index = int(random.randrange(0, len(the_list)))
             if curr_random_item_index in completed:
                 pass
             else:
@@ -76,10 +82,10 @@ class Evaluator(object):
 
         rand_list_index = -1
         for ref in completed:
-            random_list.append(list[ref])
+            random_list.append(the_list[ref])
         return random_list
 
-    def rate_move_rel(self, fen, color):
+    def rate_move_rel(self, fen: str, color: str) -> int:
         opponent = None
 
         if color == "w":
@@ -99,7 +105,7 @@ class Evaluator(object):
         else:
             return black_score - white_score
 
-    def find_move(self, fen, color):
+    def find_move(self, fen: str, color: str) -> t.Dict[str, str]:
         self.board.position(fen)
 
         og_pos = fen
@@ -115,9 +121,9 @@ class Evaluator(object):
                 best_move_so_far = move
             self.board.position(og_pos)
 
-        return best_move_so_far
+        return best_move_so_far  # type: ignore
 
-    def randomMove(self, fen, color):
+    def randomMove(self, fen: str, color: str) -> t.Dict[str, str]:
         moves = self.legal_moves_of_color(fen, color)
         moves = self.randomize_list(moves)
         return moves[0]
