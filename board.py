@@ -1,6 +1,5 @@
 # - George Guvamatanga
 # - 16 September 2019
-
 import math
 import re
 import typing as t

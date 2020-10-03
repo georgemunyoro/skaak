@@ -6,7 +6,6 @@
 # Last Update   :  19 September 2019
 #
 ###########################################################
-
 from board import Chessboard
 from evaluator import Evaluator
 
