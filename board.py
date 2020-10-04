@@ -6,7 +6,7 @@ import math
 class Chessboard(object):
     STARTING_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
 
-    def __init__(self, fen: str = Chessboard.STARTING_FEN) -> None:
+    #def __init__(self, fen: str = Chessboard.STARTING_FEN) -> None:
        
     def __init__(self, fen: str = STARTING_FEN) -> None:
         self.board_index: t.Dict[str, t.Dict[str, t.Union[None, str, int]]] = {}
@@ -553,7 +553,7 @@ class Chessboard(object):
 
                 if self.board_index[self.get_ref_from_index(one_ahead_index)]["type"] == None:
                     possible_moves.append(self.get_ref_from_index(one_ahead_index))
-                elif self.board_index[self.ge
+                elif self.board_index[self.get_ref_from_index(two_ahead_index)]["type"] != None:
                     return []
             elif color == "b":
 
@@ -682,6 +682,7 @@ class Chessboard(object):
                     clean_fen += char
 
         return clean_fen
+"""
 =======
 import re
 import math
@@ -832,7 +833,7 @@ class Chessboard(object):
 
     def calc_board_position_pos_moves(self, fen):
         moves = []
-        board.position(fen)
+        chessboard.position(fen)
         for square in self.board_index:
             piece = self.board_index[str(square)]["type"]
             color = self.board_index[str(square)]["color"]
@@ -1365,3 +1366,4 @@ class Chessboard(object):
                     clean_fen += char
 
         return clean_fen
+"""
