@@ -15,6 +15,9 @@ class Chessboard(object):
 
         # - Initializing functions
         self.init()
+        
+    def __repr__(self):
+        self.draw_ascii()
 
     def init(self) -> None:
         # - Keeps track of which square is being worked on :
