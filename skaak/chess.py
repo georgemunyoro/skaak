@@ -1,68 +1,70 @@
 from collections import namedtuple
 
-STARTING_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+STARTING_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
 WHITE = 0
 BLACK = 1
 
-EMPTY = '.'
+EMPTY = "."
 
 NORTH, EAST, SOUTH, WEST = -16, 1, 16, -1
 
-Move = namedtuple('Move', 'initial_square target_square moving_piece attacked_piece capture score')
+Move = namedtuple(
+    "Move", "initial_square target_square moving_piece attacked_piece capture score"
+)
 
-RANKS = 'abcdefgh'
+RANKS = "abcdefgh"
 
 MOVES = {
-    'P': (
+    "P": (
         NORTH,
-        NORTH+NORTH,
-        NORTH+EAST,
-        NORTH+WEST,
+        NORTH + NORTH,
+        NORTH + EAST,
+        NORTH + WEST,
     ),
-    'p': (
+    "p": (
         SOUTH,
-        SOUTH+SOUTH,
-        SOUTH+EAST,
-        SOUTH+WEST,
+        SOUTH + SOUTH,
+        SOUTH + EAST,
+        SOUTH + WEST,
     ),
-    'n': (
-        NORTH+NORTH+EAST,
-        NORTH+EAST+EAST,
-        NORTH+WEST+WEST,
-        SOUTH+SOUTH+EAST,
-        SOUTH+WEST+EAST,
-        SOUTH+EAST+EAST,
-        EAST+EAST+SOUTH,
-        WEST+WEST+SOUTH,
+    "n": (
+        NORTH + NORTH + EAST,
+        NORTH + EAST + EAST,
+        NORTH + WEST + WEST,
+        SOUTH + SOUTH + EAST,
+        SOUTH + WEST + EAST,
+        SOUTH + EAST + EAST,
+        EAST + EAST + SOUTH,
+        WEST + WEST + SOUTH,
     ),
-    'k': (
+    "k": (
         NORTH,
-        NORTH+EAST,
-        NORTH+WEST,
+        NORTH + EAST,
+        NORTH + WEST,
         SOUTH,
-        SOUTH+WEST,
-        SOUTH+EAST,
+        SOUTH + WEST,
+        SOUTH + EAST,
         EAST,
         WEST,
     ),
-    'q': (
+    "q": (
         NORTH,
-        NORTH+EAST,
-        NORTH+WEST,
+        NORTH + EAST,
+        NORTH + WEST,
         SOUTH,
-        SOUTH+WEST,
-        SOUTH+EAST,
+        SOUTH + WEST,
+        SOUTH + EAST,
         EAST,
         WEST,
     ),
-    'b': (
-        NORTH+EAST,
-        NORTH+WEST,
-        SOUTH+WEST,
-        SOUTH+EAST,
+    "b": (
+        NORTH + EAST,
+        NORTH + WEST,
+        SOUTH + WEST,
+        SOUTH + EAST,
     ),
-    'r': (
+    "r": (
         NORTH,
         SOUTH,
         EAST,
