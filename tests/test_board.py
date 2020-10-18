@@ -1,4 +1,6 @@
 from skaak import Chessboard
+from skaak import chess
+
 
 
 def test_board_set_starting_fen_by_default():
@@ -45,10 +47,108 @@ def test_board_repr():
                     )
 
 def test_board_set_fen():
-    pass
+    board = Chessboard()
+
+    fen_strings = (
+        {
+            'fen': '2k1b3/5P2/PKp2R1R/pp5P/3P4/8/B5r1/2BN4 w - - 0 1',
+            'turn': chess.WHITE,
+        },
+        {
+            'fen': 'r5R1/3B4/3p3P/P7/1pN5/2pn1K2/N1k4r/R4n2 b - - 0 1',
+            'turn': chess.BLACK
+        },
+        {
+            'fen': '2N5/3R4/p3k3/1R3pKp/3qp1b1/8/P6P/5NQn w - - 0 1',
+            'turn': chess.WHITE
+        },
+    )
+
+    for position in fen_strings:
+        board.set_fen(position['fen'])
+
+        assert board.fen == position['fen']
+        assert board.turn == position['turn']
 
 def test_board_move():
-    pass
+    board = Chessboard('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
+
+    moves = (
+        chess.Move(
+            initial_square=96,
+            target_square=64,
+            moving_piece='P',
+            attacked_piece='.',
+            capture=False,
+            score=None,
+        ),
+        chess.Move(
+            initial_square=16,
+            target_square=48,
+            moving_piece='p',
+            attacked_piece='.',
+            capture=False,
+            score=None,
+        ),
+        chess.Move(
+            initial_square=112,
+            target_square=48,
+            moving_piece='R',
+            attacked_piece='p',
+            capture=True,
+            score=None,
+        ),
+    )
+
+    for move in moves:
+        board.move(move)
+
+        assert move.attacked_piece != board.board[move.target_square]
+        assert move.moving_piece == board.board[move.target_square]
+        assert board.board[move.initial_square] == '.'
+
+def test_board_move_gen():
+    board = Chessboard('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
+    assert board.perft(0) == 1
+    assert board.perft(1) == 20
+    assert board.perft(2) == 400
+    assert board.perft(3) == 8902
+    assert board.perft(4) == 197281
+    assert board.perft(5) == 4865609
 
 def test_board_undo_move():
-    pass
+    board = Chessboard('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
+    og_board = board.board
+
+    moves = (
+        chess.Move(
+            initial_square=96,
+            target_square=64,
+            moving_piece='P',
+            attacked_piece='.',
+            capture=False,
+            score=None,
+        ),
+        chess.Move(
+            initial_square=16,
+            target_square=48,
+            moving_piece='p',
+            attacked_piece='.',
+            capture=False,
+            score=None,
+        ),
+        chess.Move(
+            initial_square=113,
+            target_square=80,
+            moving_piece='N',
+            attacked_piece='.',
+            capture=False,
+            score=None,
+        ),
+    )
+
+    for move in moves:
+        board.move(move)
+        assert board.board != og_board
+        board.undo_move()
+        assert board.board == og_board
