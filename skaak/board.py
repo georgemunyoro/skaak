@@ -36,8 +36,16 @@ class Chessboard:
         return f'{rank}{file}'
 
     def move(self, move: chess.Move) -> None:
+        if (0x88 & move.initial_square) != 0:
+            raise chess.InvalidMove(
+                f'Invalid Move : {move.moving_piece} from square {move.initial_square} to square {move.target_square}, occupied by {move.attacked_piece}'
+            )
+
         temp = list(self.board)
-        temp[move.target_square] = move.moving_piece
+
+        if (0x88 & move.target_square) == 0:
+            temp[move.target_square] = move.moving_piece
+
         temp[move.initial_square] = chess.EMPTY
         self.board = ''.join(temp)
 
@@ -126,6 +134,8 @@ class Chessboard:
         self.castling = castling
         self.half = int(half)
         self.full = int(full)
+
+        self.fen = fen
 
 
 if __name__ == "__main__":
