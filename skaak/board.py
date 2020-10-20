@@ -1,23 +1,33 @@
 from itertools import count
 from typing import List
 import skaak.chess as chess
+from ctypes import cdll
+
+
+lib = cdll.LoadLibrary("./skaak/src/lib.so")
 
 
 class Chessboard:
     def __init__(self, fen: str = chess.STARTING_FEN, **kwargs) -> None:
+        self.obj = lib.Board_New()
         self.fen: str = chess.STARTING_FEN
 
         self.board: str = ""
         self.castling: str = ""
         self.en_pas: str = ""
 
-        self.history: List[Chessboard] = [0] * 2048
+        self.history: List[Chessboard] = [None]*2048
 
         self.full: int = 0
         self.half: int = 0
 
         self.set_fen(fen)
 
+    @property
+    def __len__(self) -> int:
+        return 64
+
+    @property
     def __repr__(self) -> str:
         ascii_repr: str = ""
         for i, char in enumerate(self.board):
@@ -34,6 +44,12 @@ class Chessboard:
         file = 8 - (index // 16)
         rank = chess.RANKS[index % 16]
         return f"{rank}{file}"
+
+    @staticmethod
+    def _san_to_128_index(san: str) -> int:
+        rank = chess.RANKS.index()
+        file = int(san[1])
+        return None
 
     def move(self, move: chess.Move) -> None:
         if (0x88 & move.initial_square) != 0:
@@ -60,6 +76,9 @@ class Chessboard:
         self.board = "".join(temp)
 
         self.half -= 1
+
+    def generate_moves(self) -> List[chess.Move]:
+        lib.gen()
 
     def generate_pseudo_moves(self) -> List[chess.Move]:
         for square, piece in enumerate(self.board):
