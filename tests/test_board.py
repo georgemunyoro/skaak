@@ -70,8 +70,7 @@ def test_board_set_fen():
 
 
 def test_board_move():
-    board = Chessboard(
-        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+    board = Chessboard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
     moves = (
         chess.Move(
@@ -109,8 +108,7 @@ def test_board_move():
 
 
 def test_board_move_gen():
-    board = Chessboard(
-        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+    board = Chessboard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
     assert board.perft(0) == 1
     assert board.perft(1) == 20
     assert board.perft(2) == 400
@@ -120,8 +118,7 @@ def test_board_move_gen():
 
 
 def test_board_undo_move():
-    board = Chessboard(
-        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+    board = Chessboard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
     og_board = board.board
 
     moves = (
