@@ -72,7 +72,8 @@ class Chessboard:
             elif self.turn == chess.BLACK and not piece.islower():
                 continue
 
-            for direction in chess.MOVES[piece.lower() if piece != "P" else piece]:
+            for direction in chess.MOVES[piece.lower(
+            ) if piece != "P" else piece]:
                 for j in count(square + direction, direction):
 
                     # Check if the square is offboard
@@ -88,11 +89,11 @@ class Chessboard:
                     if piece.lower() == "p":
                         if (j % 16 != square % 16) and self.board[j] in "-.":
                             break
-                        if (j % 16 == square % 16) and self.board[j] not in "-.":
+                        if (j % 16 == square %
+                                16) and self.board[j] not in "-.":
                             break
-                        if (j // 8 - square // 8) ** 1 == 1 and self.board[
-                            j - ((j // 8 - square // 8) * 8)
-                        ] != "":
+                        if (j // 8 - square // 8)**1 == 1 and self.board[j - (
+                            (j // 8 - square // 8) * 8)] != "":
                             break
 
                     yield chess.Move(
