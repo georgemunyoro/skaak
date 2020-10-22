@@ -18,11 +18,6 @@ MoveList Board::generate_moves(std::string fen) {
     return Moves;
 }
 
-vector<int> gen_moves() {
-    vector<int> Moves {3, 1, 4, 1, 5, 9};
-    return Moves;
-}
-
 extern "C" {
     Board* Board_New() {
         return new Board();
@@ -30,9 +25,5 @@ extern "C" {
 
     MoveList board_gen_moves(Board* board, std::string fen) {
         return board->generate_moves(fen);
-    }
-
-    vector<int> gen() {
-        return gen_moves();
     }
 }
