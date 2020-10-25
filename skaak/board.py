@@ -36,12 +36,14 @@ class Chessboard:
         return f"{rank}{file}"
 
     @staticmethod
-    def _draw_indexed_board(highlighted_squares: List[int]=[]) -> None:
+    def _draw_indexed_board(highlighted_squares: List[int] = []) -> None:
         for i in range(128):
-            if i & 0x88 != 0: continue
+            if i & 0x88 != 0:
+                continue
             if i % 8 == 0:
                 print('\n')
-            if i in highlighted_squares: i = '*'
+            if i in highlighted_squares:
+                i = '*'
             print('{:>4}'.format(i), end=' ')
         print('\n')
 
