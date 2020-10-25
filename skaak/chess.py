@@ -33,7 +33,7 @@ MOVES = {
         NORTH + EAST + EAST,
         NORTH + WEST + WEST,
         SOUTH + SOUTH + EAST,
-        SOUTH + WEST + EAST,
+        NORTH + NORTH + WEST,
         SOUTH + EAST + EAST,
         EAST + EAST + SOUTH,
         WEST + WEST + SOUTH,
