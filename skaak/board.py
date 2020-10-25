@@ -41,11 +41,11 @@ class Chessboard:
             if i & 0x88 != 0:
                 continue
             if i % 8 == 0:
-                print('\n')
+                print("\n")
             if i in highlighted_squares:
-                i = '*'
-            print('{:>4}'.format(i), end=' ')
-        print('\n')
+                i = "*"
+            print("{:>4}".format(i), end=" ")
+        print("\n")
 
     def move(self, move: chess.Move) -> None:
         if (0x88 & move.initial_square) != 0:
