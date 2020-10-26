@@ -1,5 +1,3 @@
-from collections import namedtuple
-
 STARTING_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
 WHITE = 0
@@ -9,9 +7,15 @@ EMPTY = "."
 
 NORTH, EAST, SOUTH, WEST = -16, 1, 16, -1
 
-Move = namedtuple(
-    "Move", "initial_square target_square moving_piece attacked_piece capture score"
-)
+class Move:
+    def __init__(self, **kwargs):
+        self.initial_square: int = kwargs.pop('initial_square', None)
+        self.target_square: int = kwargs.pop('target_square', None)
+        self.moving_piece: int = kwargs.pop('moving_piece', None)
+        self.attacked_piece: int = kwargs.pop('attacked_piece', None)
+        self.capture: bool = kwargs.pop('capture', None)
+        self.score: int = kwargs.pop('score', None)
+        self.pseudo: bool = kwargs.pop('pseudo', None)
 
 RANKS = "abcdefgh"
 
