@@ -15,8 +15,15 @@ class Chessboard:
 
         self.full: int = 0
         self.half: int = 0
-
         self.set_fen(fen)
+
+    @property
+    def white_king_position(self) -> int:
+        return self.board.index("K")
+
+    @property
+    def black_king_position(self) -> int:
+        return self.board.index("k")
 
     def __repr__(self) -> str:
         ascii_repr: str = ""
@@ -36,14 +43,16 @@ class Chessboard:
         return f"{rank}{file}"
 
     @staticmethod
-    def _draw_indexed_board(highlighted_squares: List[int]=[]) -> None:
+    def _draw_indexed_board(highlighted_squares: List[int] = []) -> None:
         for i in range(128):
-            if i & 0x88 != 0: continue
+            if i & 0x88 != 0:
+                continue
             if i % 8 == 0:
-                print('\n')
-            if i in highlighted_squares: i = '*'
-            print('{:>4}'.format(i), end=' ')
-        print('\n')
+                print("\n")
+            if i in highlighted_squares:
+                i = "*"
+            print("{:>4}".format(i), end=" ")
+        print("\n")
 
     def move(self, move: chess.Move) -> None:
         if (0x88 & move.initial_square) != 0:
@@ -71,11 +80,80 @@ class Chessboard:
 
         self.half -= 1
 
+    def is_square_attacked(self, square: int) -> bool:
+        if square & 0x88 != 0:
+            return None
+
+        for direction in chess.MOVES["r"]:
+            for i in count(square + direction, direction):
+                if (i & 0x88) != 0:
+                    break
+                if (self.board[i].isupper() and self.turn == chess.WHITE) or (
+                    self.board[i].islower() and self.turn == chess.BLACK
+                ):
+                    break
+
+                if self.board[i].lower() in "rq":
+                    return True
+                else:
+                    break
+
+        for direction in chess.MOVES["b"]:
+            for i in count(square + direction, direction):
+                if (i & 0x88) != 0:
+                    break
+                if (
+                    self.board[i].isupper()
+                    and self.turn == chess.WHITE
+                    or self.board[i].islower()
+                    and self.turn == chess.BLACK
+                ):
+                    break
+
+                if self.board[i].lower() in "bq":
+                    return True
+                else:
+                    break
+
+        if self.turn == chess.WHITE:
+            if (
+                self.board[square + chess.NORTH + chess.EAST] == "p"
+                or self.board[square + chess.NORTH + chess.WEST] == "p"
+            ):
+                return True
+        elif self.turn == chess.BLACK:
+            if (
+                self.board[square + chess.SOUTH + chess.EAST] == "P"
+                or self.board[square + chess.SOUTH + chess.WEST] == "P"
+            ):
+                return True
+
+        non_sliding_pieces = ["k", "n"]
+        for piece_type in non_sliding_pieces:
+            for i in chess.MOVES[piece_type]:
+                if (square + i) & 0x88 == 0:
+                    if (
+                        self.board[square + i] == piece_type.lower()
+                        and self.turn == chess.WHITE
+                    ) or (
+                        self.board[square + i] == piece_type.upper()
+                        and self.turn == chess.BLACK
+                    ):
+                        return True
+
+        return False
+
+    def generate_legal_moves(self) -> List[chess.Move]:
+        for move in self.generate_pseudo_moves():
+            if move.pseudo:
+                yield(move)
+
     def generate_pseudo_moves(self) -> List[chess.Move]:
         for square, piece in enumerate(self.board):
 
             if (square & 0x88) != 0:
                 continue
+
             if self.turn == chess.WHITE and not piece.isupper():
                 continue
             elif self.turn == chess.BLACK and not piece.islower():
@@ -95,6 +173,16 @@ class Chessboard:
                         break
 
                     if piece.lower() == "p":
+                        if (
+                            self.turn == chess.WHITE
+                            and direction == (chess.NORTH * 2)
+                            and square // 16 != 6
+                        ) or (
+                            self.turn == chess.BLACK
+                            and direction == (chess.SOUTH * 2)
+                            and square // 16 != 1
+                        ):
+                            break
                         if (j % 16 != square % 16) and self.board[j] in "-.":
                             break
                         if (j % 16 == square % 16) and self.board[j] not in "-.":
@@ -104,17 +192,33 @@ class Chessboard:
                         ] != "":
                             break
 
-                    yield chess.Move(
+                    move = chess.Move(
                         initial_square=square,
                         target_square=j,
                         moving_piece=self.board[square],
                         attacked_piece=self.board[j],
                         capture=(self.board[j] not in "-."),
                         score=0,
+                        pseudo=True,
                     )
+
+                    self.move(move=move)
+                    self.undo_move()
+
+                    if not self.in_check():
+                        move.pseudo = False
+
+                    yield (move)
 
                     if self.board[j] not in "-." or piece.lower() in "knp":
                         break
+
+    def in_check(self) -> bool:
+        return (
+            self.is_square_attacked(self.white_king_position)
+            if self.turn == chess.WHITE
+            else self.is_square_attacked(self.black_king_position)
+        )
 
     def perft(self, depth: int) -> int:
         nodes = 0
@@ -122,7 +226,7 @@ class Chessboard:
         if depth == 0:
             return 1
 
-        for move in self.generate_pseudo_moves():
+        for move in self.generate_legal_moves():
             self.move(move)
             nodes += self.perft(depth - 1)
             self.undo_move()
