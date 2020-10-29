@@ -59,10 +59,7 @@ def test_board_set_fen():
             "fen": "r5R1/3B4/3p3P/P7/1pN5/2pn1K2/N1k4r/R4n2 b - - 0 1",
             "turn": chess.BLACK,
         },
-        {
-            "fen": "2N5/3R4/p3k3/1R3pKp/3qp1b1/8/P6P/5NQn w - - 0 1",
-            "turn": chess.WHITE
-        },
+        {"fen": "2N5/3R4/p3k3/1R3pKp/3qp1b1/8/P6P/5NQn w - - 0 1", "turn": chess.WHITE},
     )
 
     for position in fen_strings:
@@ -73,8 +70,7 @@ def test_board_set_fen():
 
 
 def test_board_move():
-    board = Chessboard(
-        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+    board = Chessboard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
     moves = (
         chess.Move(
@@ -112,8 +108,7 @@ def test_board_move():
 
 
 def test_board_move_gen():
-    board = Chessboard(
-        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+    board = Chessboard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
     assert board.perft(0) == 1
     assert board.perft(1) == 20
@@ -124,8 +119,7 @@ def test_board_move_gen():
 
 
 def test_board_undo_move():
-    board = Chessboard(
-        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+    board = Chessboard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
     og_board = board.board
 
     moves = (
