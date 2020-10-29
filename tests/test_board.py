@@ -1,4 +1,5 @@
-from skaak import Chessboard, chess
+from skaak import chess
+from skaak import Chessboard
 
 
 def test_board_set_starting_fen_by_default():
