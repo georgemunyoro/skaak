@@ -1,5 +1,6 @@
 from itertools import count
 from typing import List
+
 import skaak.chess as chess
 
 
