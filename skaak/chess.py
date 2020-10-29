@@ -10,8 +10,8 @@ EMPTY = "."
 NORTH, EAST, SOUTH, WEST = -16, 1, 16, -1
 
 Move = namedtuple(
-    "Move", "initial_square target_square moving_piece attacked_piece capture score"
-)
+    "Move",
+    "initial_square target_square moving_piece attacked_piece capture score")
 
 RANKS = "abcdefgh"
 
