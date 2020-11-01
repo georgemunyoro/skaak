@@ -171,7 +171,8 @@ class Chessboard:
                     fen += str(empty_square_count)
                     empty_square_count = 0
                 continue
-            if i % 8 == 0 and i != 0: fen += '/'
+            if i % 8 == 0 and i != 0:
+                fen += '/'
             if j in chess.PIECES:
                 if empty_square_count > 0:
                     fen += str(empty_square_count)
@@ -244,7 +245,6 @@ class Chessboard:
 
                     if self.board[j] not in "-." or piece.lower() in "knp":
                         break
-
 
     def in_check(self) -> bool:
         return (
