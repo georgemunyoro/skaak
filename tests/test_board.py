@@ -1,50 +1,46 @@
-from skaak import Chessboard
+import os
+
 from skaak import chess
+from skaak import Chessboard
 
 
 def test_board_set_starting_fen_by_default():
     board = Chessboard()
-    assert board.fen == "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    assert board.fen == chess.STARTING_FEN
 
 
 def test_board_repr():
     board = Chessboard()
 
-    board.set_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
-    assert str(board) == (
-        "\nr n b q k b n r "
-        "\np p p p p p p p "
-        "\n. . . . . . . . "
-        "\n. . . . . . . . "
-        "\n. . . . . . . . "
-        "\n. . . . . . . . "
-        "\nP P P P P P P P "
-        "\nR N B Q K B N R "
-    )
+    board.set_fen(chess.STARTING_FEN)
+    assert str(board) == ("\nr n b q k b n r "
+                          "\np p p p p p p p "
+                          "\n. . . . . . . . "
+                          "\n. . . . . . . . "
+                          "\n. . . . . . . . "
+                          "\n. . . . . . . . "
+                          "\nP P P P P P P P "
+                          "\nR N B Q K B N R ")
 
     board.set_fen("3q4/kPpP4/4b1p1/2PP1n2/K3B3/1p6/8/4N1bN w - - 0 1")
-    assert str(board) == (
-        "\n. . . q . . . . "
-        "\nk P p P . . . . "
-        "\n. . . . b . p . "
-        "\n. . P P . n . . "
-        "\nK . . . B . . . "
-        "\n. p . . . . . . "
-        "\n. . . . . . . . "
-        "\n. . . . N . b N "
-    )
+    assert str(board) == ("\n. . . q . . . . "
+                          "\nk P p P . . . . "
+                          "\n. . . . b . p . "
+                          "\n. . P P . n . . "
+                          "\nK . . . B . . . "
+                          "\n. p . . . . . . "
+                          "\n. . . . . . . . "
+                          "\n. . . . N . b N ")
 
     board.set_fen("QBr3N1/1K6/R2ppP2/1n6/P3k3/6p1/1p5P/1b6 w - - 0 1")
-    assert str(board) == (
-        "\nQ B r . . . N . "
-        "\n. K . . . . . . "
-        "\nR . . p p P . . "
-        "\n. n . . . . . . "
-        "\nP . . . k . . . "
-        "\n. . . . . . p . "
-        "\n. p . . . . . P "
-        "\n. b . . . . . . "
-    )
+    assert str(board) == ("\nQ B r . . . N . "
+                          "\n. K . . . . . . "
+                          "\nR . . p p P . . "
+                          "\n. n . . . . . . "
+                          "\nP . . . k . . . "
+                          "\n. . . . . . p . "
+                          "\n. p . . . . . P "
+                          "\n. b . . . . . . ")
 
 
 def test_board_set_fen():
@@ -73,7 +69,7 @@ def test_board_set_fen():
 
 
 def test_board_move():
-    board = Chessboard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+    board = Chessboard(chess.STARTING_FEN)
 
     moves = (
         chess.Move(
@@ -111,8 +107,8 @@ def test_board_move():
 
 
 def test_board_move_gen():
-    board = Chessboard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
-    
+    board = Chessboard(chess.STARTING_FEN)
+
     assert board.perft(0) == 1
     assert board.perft(1) == 20
     assert board.perft(2) == 400
@@ -121,8 +117,89 @@ def test_board_move_gen():
     assert board.perft(5) == 4865609
 
 
+def test_board_generate_fen():
+    with open("tests/FEN/endgames.txt", "r") as endgames_fen_text_file:
+        for fen in endgames_fen_text_file.readlines():
+            board = Chessboard(fen)
+            assert board.generate_fen().strip() == fen.strip()
+
+
+def test_board_is_square_attacked():
+    fens = {
+        "8/5K2/8/7k/8/8/8/8 w - - 0 1": (38, 39, 54, 70, 71),
+        "3Q4/3p2p1/4pp2/K7/bPp1BP1B/2P2p2/8/2k3r1 w - - 0 1": (
+            34,
+            38,
+            39,
+            49,
+            51,
+            52,
+            53,
+            54,
+            70,
+            81,
+            83,
+            86,
+            97,
+            98,
+            99,
+            100,
+            102,
+            113,
+            115,
+            116,
+            117,
+            119,
+        ),
+        "3B4/PP2r3/1rp5/P3k1Pb/2p4p/3P2qN/8/K7 w - - 0 1": (
+            4,
+            17,
+            18,
+            19,
+            21,
+            22,
+            23,
+            32,
+            35,
+            36,
+            37,
+            38,
+            49,
+            51,
+            53,
+            54,
+            65,
+            67,
+            68,
+            69,
+            70,
+            81,
+            83,
+            84,
+            85,
+            87,
+            97,
+            100,
+            101,
+            102,
+            103,
+            113,
+            115,
+            116,
+            118,
+        ),
+    }
+
+    for fen in fens:
+        attacked_squares = fens[fen]
+        board = Chessboard(fen)
+        for square in [i for i in range(128) if (i & 0x88) == 0]:
+            if board.is_square_attacked(square):
+                assert square in attacked_squares
+
+
 def test_board_undo_move():
-    board = Chessboard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+    board = Chessboard(chess.STARTING_FEN)
     og_board = board.board
 
     moves = (
