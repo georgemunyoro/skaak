@@ -9,15 +9,17 @@ NORTH, EAST, SOUTH, WEST = -16, 1, 16, -1
 
 PIECES = "rnbqkpRNBQKP"
 
+
 class Move:
     def __init__(self, **kwargs):
-        self.initial_square: int = kwargs.pop('initial_square', None)
-        self.target_square: int = kwargs.pop('target_square', None)
-        self.moving_piece: int = kwargs.pop('moving_piece', None)
-        self.attacked_piece: int = kwargs.pop('attacked_piece', None)
-        self.capture: bool = kwargs.pop('capture', None)
-        self.score: int = kwargs.pop('score', None)
-        self.pseudo: bool = kwargs.pop('pseudo', None)
+        self.initial_square: int = kwargs.pop("initial_square", None)
+        self.target_square: int = kwargs.pop("target_square", None)
+        self.moving_piece: int = kwargs.pop("moving_piece", None)
+        self.attacked_piece: int = kwargs.pop("attacked_piece", None)
+        self.capture: bool = kwargs.pop("capture", None)
+        self.score: int = kwargs.pop("score", None)
+        self.pseudo: bool = kwargs.pop("pseudo", None)
+
 
 RANKS = "abcdefgh"
 

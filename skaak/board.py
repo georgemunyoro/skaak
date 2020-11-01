@@ -1,5 +1,6 @@
 from itertools import count
 from typing import List
+
 import skaak.chess as chess
 
 
@@ -88,7 +89,7 @@ class Chessboard:
         if self.board[square] == chess.EMPTY:
             return None
 
-        if (self.board[square].isupper()):
+        if self.board[square].isupper():
             return chess.WHITE
         return chess.BLACK
 
@@ -96,7 +97,8 @@ class Chessboard:
         if square & 0x88 != 0:
             return None
 
-        if (self.board[square] != chess.EMPTY) and self.get_square_color(square) != self.turn:
+        if (self.board[square] !=
+                chess.EMPTY) and self.get_square_color(square) != self.turn:
             return None
 
         for direction in chess.MOVES["r"]:
@@ -104,8 +106,7 @@ class Chessboard:
                 if (i & 0x88) != 0:
                     break
                 if (self.board[i].isupper() and self.turn == chess.WHITE) or (
-                    self.board[i].islower() and self.turn == chess.BLACK
-                ):
+                        self.board[i].islower() and self.turn == chess.BLACK):
                     break
 
                 if self.board[i].lower() in "rq":
@@ -119,12 +120,8 @@ class Chessboard:
             for i in count(square + direction, direction):
                 if (i & 0x88) != 0:
                     break
-                if (
-                    self.board[i].isupper()
-                    and self.turn == chess.WHITE
-                    or self.board[i].islower()
-                    and self.turn == chess.BLACK
-                ):
+                if (self.board[i].isupper() and self.turn == chess.WHITE or
+                        self.board[i].islower() and self.turn == chess.BLACK):
                     break
 
                 if self.board[i].lower() in "bq":
@@ -135,35 +132,28 @@ class Chessboard:
                     break
 
         if self.turn == chess.WHITE:
-            if (
-                self.board[square + chess.NORTH + chess.EAST] == "p"
-                or self.board[square + chess.NORTH + chess.WEST] == "p"
-            ):
+            if (self.board[square + chess.NORTH + chess.EAST] == "p"
+                    or self.board[square + chess.NORTH + chess.WEST] == "p"):
                 return True
         elif self.turn == chess.BLACK:
-            if (
-                self.board[square + chess.SOUTH + chess.EAST] == "P"
-                or self.board[square + chess.SOUTH + chess.WEST] == "P"
-            ):
+            if (self.board[square + chess.SOUTH + chess.EAST] == "P"
+                    or self.board[square + chess.SOUTH + chess.WEST] == "P"):
                 return True
 
         non_sliding_pieces = ["k", "n"]
         for piece_type in non_sliding_pieces:
             for i in chess.MOVES[piece_type]:
                 if (square + i) & 0x88 == 0:
-                    if (
-                        self.board[square + i] == piece_type.lower()
-                        and self.turn == chess.WHITE
-                    ) or (
-                        self.board[square + i] == piece_type.upper()
-                        and self.turn == chess.BLACK
-                    ):
+                    if (self.board[square + i] == piece_type.lower()
+                            and self.turn == chess.WHITE) or (
+                                self.board[square + i] == piece_type.upper()
+                                and self.turn == chess.BLACK):
                         return True
 
         return False
 
     def generate_fen(self) -> str:
-        fen = ''
+        fen = ""
         empty_square_count = 0
         for i, j in enumerate(self.board):
             if (i & 0x88) != 0:
@@ -171,7 +161,8 @@ class Chessboard:
                     fen += str(empty_square_count)
                     empty_square_count = 0
                 continue
-            if i % 8 == 0 and i != 0: fen += '/'
+            if i % 8 == 0 and i != 0:
+                fen += "/"
             if j in chess.PIECES:
                 if empty_square_count > 0:
                     fen += str(empty_square_count)
@@ -180,13 +171,16 @@ class Chessboard:
             elif j == chess.EMPTY:
                 empty_square_count += 1
 
-        return fen + f' {"wb"[self.turn]} {self.castling} {self.en_pas} {self.half} {self.full}'
+        return (
+            fen +
+            f' {"wb"[self.turn]} {self.castling} {self.en_pas} {self.half} {self.full}'
+        )
 
     def generate_legal_moves(self) -> List[chess.Move]:
         for move in self.generate_pseudo_moves():
             self.move(move)
             if not self.in_check():
-                yield(move)
+                yield (move)
             self.undo_move()
 
     def generate_pseudo_moves(self) -> List[chess.Move]:
@@ -200,7 +194,8 @@ class Chessboard:
             elif self.turn == chess.BLACK and not piece.islower():
                 continue
 
-            for direction in chess.MOVES[piece.lower() if piece != "P" else piece]:
+            for direction in chess.MOVES[piece.lower(
+            ) if piece != "P" else piece]:
                 for j in count(square + direction, direction):
 
                     # Check if the square is offboard
@@ -214,26 +209,26 @@ class Chessboard:
                         break
 
                     if piece.lower() == "p":
-                        if (
-                            self.turn == chess.WHITE
-                            and direction == (chess.NORTH * 2)
-                            and (square // 16 != 6 or self.board[square+chess.NORTH] != chess.EMPTY)
-                        ) or (
-                            self.turn == chess.BLACK
-                            and direction == (chess.SOUTH * 2)
-                            and (square // 16 != 1 or self.board[square+chess.SOUTH] != chess.EMPTY)
-                        ):
+                        if (self.turn == chess.WHITE
+                                and direction == (chess.NORTH * 2) and
+                            (square // 16 != 6 or
+                             self.board[square + chess.NORTH] != chess.EMPTY)
+                            ) or (self.turn == chess.BLACK
+                                  and direction == (chess.SOUTH * 2) and
+                                  (square // 16 != 1
+                                   or self.board[square + chess.SOUTH] !=
+                                   chess.EMPTY)):
                             break
                         if (j % 16 != square % 16) and self.board[j] in "-.":
                             break
-                        if (j % 16 == square % 16) and self.board[j] not in "-.":
+                        if (j % 16 == square %
+                                16) and self.board[j] not in "-.":
                             break
-                        if (j // 8 - square // 8) ** 1 == 1 and self.board[
-                            j - ((j // 8 - square // 8) * 8)
-                        ] != "":
+                        if (j // 8 - square // 8)**1 == 1 and self.board[j - (
+                            (j // 8 - square // 8) * 8)] != "":
                             break
 
-                    yield(chess.Move(
+                    yield (chess.Move(
                         initial_square=square,
                         target_square=j,
                         moving_piece=self.board[square],
@@ -245,13 +240,10 @@ class Chessboard:
                     if self.board[j] not in "-." or piece.lower() in "knp":
                         break
 
-
     def in_check(self) -> bool:
-        return (
-            self.is_square_attacked(self.white_king_position)
-            if self.turn == chess.WHITE
-            else self.is_square_attacked(self.black_king_position)
-        )
+        return (self.is_square_attacked(self.white_king_position)
+                if self.turn == chess.WHITE else self.is_square_attacked(
+                    self.black_king_position))
 
     def perft(self, depth: int) -> int:
         nodes = 0
