@@ -178,11 +178,11 @@ class Chessboard:
                         if (
                             self.turn == chess.WHITE
                             and direction == (chess.NORTH * 2)
-                            and square // 16 != 6
+                            and (square // 16 != 6 or self.board[square+chess.NORTH] != chess.EMPTY)
                         ) or (
                             self.turn == chess.BLACK
                             and direction == (chess.SOUTH * 2)
-                            and square // 16 != 1
+                            and (square // 16 != 1 or self.board[square+chess.SOUTH] != chess.EMPTY)
                         ):
                             break
                         if (j % 16 != square % 16) and self.board[j] in "-.":
