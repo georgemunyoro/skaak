@@ -88,7 +88,7 @@ class Chessboard:
         if self.board[square] == chess.EMPTY:
             return None
 
-        if (self.board[square].isupper()):
+        if self.board[square].isupper():
             return chess.WHITE
         return chess.BLACK
 
@@ -96,7 +96,9 @@ class Chessboard:
         if square & 0x88 != 0:
             return None
 
-        if (self.board[square] != chess.EMPTY) and self.get_square_color(square) != self.turn:
+        if (self.board[square] != chess.EMPTY) and self.get_square_color(
+            square
+        ) != self.turn:
             return None
 
         for direction in chess.MOVES["r"]:
@@ -163,7 +165,7 @@ class Chessboard:
         return False
 
     def generate_fen(self) -> str:
-        fen = ''
+        fen = ""
         empty_square_count = 0
         for i, j in enumerate(self.board):
             if (i & 0x88) != 0:
@@ -172,7 +174,7 @@ class Chessboard:
                     empty_square_count = 0
                 continue
             if i % 8 == 0 and i != 0:
-                fen += '/'
+                fen += "/"
             if j in chess.PIECES:
                 if empty_square_count > 0:
                     fen += str(empty_square_count)
@@ -181,13 +183,16 @@ class Chessboard:
             elif j == chess.EMPTY:
                 empty_square_count += 1
 
-        return fen + f' {"wb"[self.turn]} {self.castling} {self.en_pas} {self.half} {self.full}'
+        return (
+            fen
+            + f' {"wb"[self.turn]} {self.castling} {self.en_pas} {self.half} {self.full}'
+        )
 
     def generate_legal_moves(self) -> List[chess.Move]:
         for move in self.generate_pseudo_moves():
             self.move(move)
             if not self.in_check():
-                yield(move)
+                yield (move)
             self.undo_move()
 
     def generate_pseudo_moves(self) -> List[chess.Move]:
@@ -218,11 +223,17 @@ class Chessboard:
                         if (
                             self.turn == chess.WHITE
                             and direction == (chess.NORTH * 2)
-                            and (square // 16 != 6 or self.board[square+chess.NORTH] != chess.EMPTY)
+                            and (
+                                square // 16 != 6
+                                or self.board[square + chess.NORTH] != chess.EMPTY
+                            )
                         ) or (
                             self.turn == chess.BLACK
                             and direction == (chess.SOUTH * 2)
-                            and (square // 16 != 1 or self.board[square+chess.SOUTH] != chess.EMPTY)
+                            and (
+                                square // 16 != 1
+                                or self.board[square + chess.SOUTH] != chess.EMPTY
+                            )
                         ):
                             break
                         if (j % 16 != square % 16) and self.board[j] in "-.":
@@ -234,14 +245,16 @@ class Chessboard:
                         ] != "":
                             break
 
-                    yield(chess.Move(
-                        initial_square=square,
-                        target_square=j,
-                        moving_piece=self.board[square],
-                        attacked_piece=self.board[j],
-                        capture=(self.board[j] not in "-."),
-                        score=0,
-                    ))
+                    yield (
+                        chess.Move(
+                            initial_square=square,
+                            target_square=j,
+                            moving_piece=self.board[square],
+                            attacked_piece=self.board[j],
+                            capture=(self.board[j] not in "-."),
+                            score=0,
+                        )
+                    )
 
                     if self.board[j] not in "-." or piece.lower() in "knp":
                         break
