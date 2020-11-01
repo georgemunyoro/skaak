@@ -145,8 +145,10 @@ class Chessboard:
 
     def generate_legal_moves(self) -> List[chess.Move]:
         for move in self.generate_pseudo_moves():
-            if move.pseudo:
+            self.move(move)
+            if not self.in_check():
                 yield(move)
+            self.undo_move()
 
     def generate_pseudo_moves(self) -> List[chess.Move]:
         for square, piece in enumerate(self.board):
@@ -192,26 +194,18 @@ class Chessboard:
                         ] != "":
                             break
 
-                    move = chess.Move(
+                    yield(chess.Move(
                         initial_square=square,
                         target_square=j,
                         moving_piece=self.board[square],
                         attacked_piece=self.board[j],
                         capture=(self.board[j] not in "-."),
                         score=0,
-                        pseudo=True,
-                    )
-
-                    self.move(move=move)
-                    self.undo_move()
-
-                    if not self.in_check():
-                        move.pseudo = False
-
-                    yield (move)
+                    ))
 
                     if self.board[j] not in "-." or piece.lower() in "knp":
                         break
+
 
     def in_check(self) -> bool:
         return (

@@ -39,7 +39,7 @@ MOVES = {
         SOUTH + SOUTH + EAST,
         NORTH + NORTH + WEST,
         SOUTH + EAST + EAST,
-        EAST + EAST + SOUTH,
+        WEST + SOUTH + SOUTH,
         WEST + WEST + SOUTH,
     ),
     "k": (
