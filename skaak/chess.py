@@ -7,6 +7,8 @@ EMPTY = "."
 
 NORTH, EAST, SOUTH, WEST = -16, 1, 16, -1
 
+PIECES = "rnbqkpRNBQKP"
+
 class Move:
     def __init__(self, **kwargs):
         self.initial_square: int = kwargs.pop('initial_square', None)

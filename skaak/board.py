@@ -25,6 +25,10 @@ class Chessboard:
     def black_king_position(self) -> int:
         return self.board.index("k")
 
+    @property
+    def legal_moves(self) -> List[chess.Move]:
+        return self.generate_legal_moves()
+
     def __repr__(self) -> str:
         ascii_repr: str = ""
         for i, char in enumerate(self.board):
@@ -80,8 +84,19 @@ class Chessboard:
 
         self.half -= 1
 
+    def get_square_color(self, square: int) -> int:
+        if self.board[square] == chess.EMPTY:
+            return None
+
+        if (self.board[square].isupper()):
+            return chess.WHITE
+        return chess.BLACK
+
     def is_square_attacked(self, square: int) -> bool:
         if square & 0x88 != 0:
+            return None
+
+        if (self.board[square] != chess.EMPTY) and self.get_square_color(square) != self.turn:
             return None
 
         for direction in chess.MOVES["r"]:
@@ -95,6 +110,8 @@ class Chessboard:
 
                 if self.board[i].lower() in "rq":
                     return True
+                elif self.board[i] == chess.EMPTY:
+                    continue
                 else:
                     break
 
@@ -112,6 +129,8 @@ class Chessboard:
 
                 if self.board[i].lower() in "bq":
                     return True
+                elif self.board[i] == chess.EMPTY:
+                    continue
                 else:
                     break
 
@@ -142,6 +161,26 @@ class Chessboard:
                         return True
 
         return False
+
+    def generate_fen(self) -> str:
+        fen = ''
+        empty_square_count = 0
+        for i, j in enumerate(self.board):
+            if (i & 0x88) != 0:
+                if empty_square_count > 0:
+                    fen += str(empty_square_count)
+                    empty_square_count = 0
+                continue
+            if i % 8 == 0 and i != 0: fen += '/'
+            if j in chess.PIECES:
+                if empty_square_count > 0:
+                    fen += str(empty_square_count)
+                    empty_square_count = 0
+                fen += j
+            elif j == chess.EMPTY:
+                empty_square_count += 1
+
+        return fen + f' {"wb"[self.turn]} {self.castling} {self.en_pas} {self.half} {self.full}'
 
     def generate_legal_moves(self) -> List[chess.Move]:
         for move in self.generate_pseudo_moves():
@@ -244,6 +283,7 @@ class Chessboard:
         self.turn = chess.WHITE if turn == "w" else chess.BLACK
 
         self.castling = castling
+        self.en_pas = en_pas
         self.half = int(half)
         self.full = int(full)
 
