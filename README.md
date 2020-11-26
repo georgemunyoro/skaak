@@ -19,7 +19,7 @@
   <p align="center">
     Python Chess Library
     <br />
-    <a href="https://pydgon.social"><strong>Check it out »</strong></a>
+    <a href="https://pypi.org/project/Skaak/"><strong>Check it out »</strong></a>
     <br />
     <br />
     <a href="https://github.com/georgemunyoro/skaak/issues">Report Bug</a>
@@ -45,16 +45,19 @@
 ## Getting Started
 
 To get a local copy up and running follow these simple example steps:
-1. Ensure you have the [Pydgon API](https://github.com/georgemunyoro/pydgon-api) running
-2. Clone the repository onto your machine and navigate into the project folder
+1. Clone the repository onto your machine and navigate into the project folder
 	```sh
 	$ git clone https://github.com/georgemunyoro/skaak && cd skaak
 	```
-3. Create a virtual environment
+2. Create a virtual environment
 	```sh
 	$ python3 -m venv venv && source ./venv/bin/activate
 	```
- 
+3. Install the required packages
+	```sh
+	$ pip install -r ./requirements.txt
+	```
+
  ## Installation
  To install skaak, simply: `$ pip3 install skaak`
 
