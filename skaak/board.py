@@ -5,6 +5,10 @@ import skaak.chess as chess
 
 
 class Chessboard:
+    """
+    Representation of the classic Chessboard and it's rules
+    """
+
     def __init__(self, fen: str = chess.STARTING_FEN, **kwargs) -> None:
         self.fen: str = chess.STARTING_FEN
 
@@ -31,7 +35,9 @@ class Chessboard:
         return self.generate_legal_moves()
 
     def __repr__(self) -> str:
+        """Returns the ASCII representation of the current state of the board"""
         ascii_repr: str = ""
+
         for i, char in enumerate(self.board):
             if i % 16 == 0:
                 ascii_repr += "\n"
@@ -43,6 +49,7 @@ class Chessboard:
 
     @staticmethod
     def _128_index_to_san(index: int) -> str:
+        """Converts index of square on 128 board representation to SAN(Standard Algebraic Notation)"""
         file = 8 - (index // 16)
         rank = chess.RANKS[index % 16]
         return f"{rank}{file}"
@@ -86,6 +93,7 @@ class Chessboard:
         self.half -= 1
 
     def get_square_color(self, square: int) -> int:
+        """Returns the color of the piece on a given square"""
         if self.board[square] == chess.EMPTY:
             return None
 
@@ -153,6 +161,7 @@ class Chessboard:
         return False
 
     def generate_fen(self) -> str:
+        """Generates a board state in the form of an FEN string"""
         fen = ""
         empty_square_count = 0
         for i, j in enumerate(self.board):
@@ -184,8 +193,9 @@ class Chessboard:
             self.undo_move()
 
     def generate_pseudo_moves(self) -> List[chess.Move]:
-        for square, piece in enumerate(self.board):
+        """Generates moves that may more may not be potentially harmful to the king"""
 
+        for square, piece in enumerate(self.board):
             if (square & 0x88) != 0:
                 continue
 
@@ -259,6 +269,8 @@ class Chessboard:
         return nodes
 
     def set_fen(self, fen: str) -> None:
+        """Sets the current board state to match that of the given FEN string"""
+
         board, turn, castling, en_pas, half, full = fen.split()
 
         temp = ""

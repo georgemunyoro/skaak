@@ -9,6 +9,10 @@ def test_board_set_starting_fen_by_default():
     assert board.fen == chess.STARTING_FEN
 
 
+def test_starting_fen_is_correct():
+    assert chess.STARTING_FEN == "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+
+
 def test_board_repr():
     board = Chessboard()
 
