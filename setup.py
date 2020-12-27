@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 setup(
     name="Skaak",
     packages=find_packages(include=["skaak"]),
-    version="0.1.0",
+    version="0.12.5",
     description="A Python Chess Library",
     author="George Munyoro",
     license="MIT",
