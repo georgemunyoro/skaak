@@ -12,7 +12,7 @@ PIECES = "rnbqkpRNBQKP"
 
 def convert_x88_board_ref_to_san(x88_board_ref: int) -> str:
     pos_rank = 8 - (x88_board_ref // 16)
-    pos_file = "abcdefgh"[x88_board_ref % 16]
+    pos_file = "abcdefgh" [x88_board_ref % 16]
     return f"{pos_file}{pos_rank}"
 
 

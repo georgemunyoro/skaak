@@ -7,9 +7,9 @@ import skaak
 
 def convert(move):
     fr = (move.from_square // 8) + 1
-    ff = "abcdefgh"[move.from_square % 8]
+    ff = "abcdefgh" [move.from_square % 8]
     tr = (move.to_square // 8) + 1
-    tf = "abcdefgh"[move.to_square % 8]
+    tf = "abcdefgh" [move.to_square % 8]
     return f"{ff}{fr}{tf}{tr}"
 
 
@@ -40,7 +40,9 @@ def main():
                 print(sorted(c_moves))
                 print(len(c_moves), len(s_moves))
 
-                missing_moves = [move for move in c_moves if move not in s_moves]
+                missing_moves = [
+                    move for move in c_moves if move not in s_moves
+                ]
                 false_moves = [move for move in s_moves if move not in c_moves]
 
                 print("\nMissing Moves:")
