@@ -1,6 +1,8 @@
-import skaak
-import chess
 import sys
+
+import chess
+
+import skaak
 
 
 def convert(move):
