@@ -12,7 +12,7 @@ def convert(move):
 
 
 def main():
-    with open('./tests/FEN/endgames.txt') as fen_file:
+    with open("./tests/FEN/endgames.txt") as fen_file:
         # for fen in fen_file.readlines():
         for fen in ["8/5pkp/1n4p1/1P6/3K2P1/2N4P/8/8 w - - 0 70"]:
             s_board = skaak.Chessboard(fen)
@@ -38,8 +38,7 @@ def main():
                 print(sorted(c_moves))
                 print(len(c_moves), len(s_moves))
 
-                missing_moves = [
-                    move for move in c_moves if move not in s_moves]
+                missing_moves = [move for move in c_moves if move not in s_moves]
                 false_moves = [move for move in s_moves if move not in c_moves]
 
                 print("\nMissing Moves:")
