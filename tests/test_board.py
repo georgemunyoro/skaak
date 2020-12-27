@@ -1,4 +1,5 @@
 import os
+import pytest
 
 from skaak import chess
 from skaak import Chessboard
@@ -110,6 +111,7 @@ def test_board_move():
         assert board.board[move.initial_square] == "."
 
 
+@pytest.mark.skip(reason="This takes quite a while")
 def test_board_move_gen():
     board = Chessboard(chess.STARTING_FEN)
 
