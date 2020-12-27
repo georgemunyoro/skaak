@@ -2,6 +2,7 @@ import skaak
 import chess
 import sys
 
+
 def convert(move):
     fr = (move.from_square // 8) + 1
     ff = "abcdefgh"[move.from_square % 8]
@@ -28,7 +29,7 @@ def main():
 
             # print(sorted(s_moves))
             # print(sorted(c_moves))
-            
+
             if len(c_moves) != len(s_moves):
                 print(fen)
                 print(s_board)
@@ -37,7 +38,8 @@ def main():
                 print(sorted(c_moves))
                 print(len(c_moves), len(s_moves))
 
-                missing_moves = [move for move in c_moves if move not in s_moves]
+                missing_moves = [
+                    move for move in c_moves if move not in s_moves]
                 false_moves = [move for move in s_moves if move not in c_moves]
 
                 print("\nMissing Moves:")
@@ -45,7 +47,7 @@ def main():
                     print(move)
 
                 print("\nFalse Moves:")
-                for move in false_moves: 
+                for move in false_moves:
                     print(move)
 
                 print(s_board.generate_fen())
@@ -53,8 +55,8 @@ def main():
 
 if __name__ == "__main__":
     # main()
-# 
+    #
     for i in range(1, 6):
         x = skaak.Chessboard()
         print(x.perft(i))
-# 
+#
