@@ -1,8 +1,8 @@
 import os
+
 import pytest
 
-from skaak import chess
-from skaak import Chessboard
+from skaak import Chessboard, chess
 
 
 def test_board_set_starting_fen_by_default():
