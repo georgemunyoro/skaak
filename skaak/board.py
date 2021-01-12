@@ -16,7 +16,7 @@ class Chessboard:
         self.castling: str = ""
         self.en_pas: str = ""
 
-        self.history: List[Chessboard] = [0] * 2048
+        self.history: List[str] = [0] * 1024
 
         self.full: int = 0
         self.half: int = 0
@@ -91,7 +91,7 @@ class Chessboard:
 
         self.half += 1
 
-    def undo_move(self) -> None:
+    def undo_last_move(self) -> None:
         self.half -= 1
         self.set_fen(self.history[self.half])
 
@@ -210,7 +210,7 @@ class Chessboard:
             ):
                 yield (move)
             self.turn ^= 1
-            self.undo_move()
+            self.undo_last_move()
 
     def generate_pseudo_moves(self) -> List[chess.Move]:
         """Generates moves that may more may not be potentially harmful to the king"""
@@ -294,7 +294,7 @@ class Chessboard:
         for move in legal_moves:
             self.move(move)
             nodes += self.perft(depth - 1)
-            self.undo_move()
+            self.undo_last_move()
 
         return nodes
 

@@ -204,7 +204,7 @@ def test_board_is_square_attacked():
                 assert square in attacked_squares
 
 
-def test_board_undo_move():
+def test_board_undo_last_move():
     board = Chessboard(chess.STARTING_FEN)
     og_board = board.board
 
@@ -238,5 +238,5 @@ def test_board_undo_move():
     for move in moves:
         board.move(move)
         assert board.board != og_board
-        board.undo_move()
+        board.undo_last_move()
         assert board.board == og_board
