@@ -24,6 +24,8 @@ recommended creating a virtual environment, installing the packages in
 `requirements.txt` and using the version of black installed in your virtual
 environment.
 
+https://youtu.be/hgI0p1zf31k?list=PLJTU05BQxDX0SSzGOKeodvF_Ec3_AarfT
+
 ### Setting up a development environment
 
 - Install Python3.8
