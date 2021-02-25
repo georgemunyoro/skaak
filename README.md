@@ -59,7 +59,7 @@ To get a local copy up and running follow these simple example steps:
 	```
 
  ## Installation
- To install skaak, simply: `$ pip3 install skaak`
+ Skaak can be installed with the [pip](https://pypi.org/project/pip/) package manager. Simply install it and run `pip install skaak`.
 
 ### Prerequisites
 The application requires the following to be installed on your system in order to run:
