@@ -1,4 +1,6 @@
 import os
+import sys
+
 import pytest
 
 from skaak import chess
@@ -11,7 +13,8 @@ def test_board_set_starting_fen_by_default():
 
 
 def test_starting_fen_is_correct():
-    assert chess.STARTING_FEN == "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    assert (chess.STARTING_FEN ==
+            "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
 
 def test_board_repr():
@@ -111,8 +114,10 @@ def test_board_move():
         assert board.board[move.initial_square] == "."
 
 
-@pytest.mark.skip(reason="This takes quite a while")
-def test_board_move_gen():
+def test_board_move_gen(run_movegen_test):
+    if not run_movegen_test:
+        pytest.skip("This can take a while.")
+
     board = Chessboard(chess.STARTING_FEN)
 
     assert board.perft(0) == 1
