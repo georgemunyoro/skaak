@@ -119,13 +119,10 @@ def test_board_move_gen(run_movegen_test):
         pytest.skip("This can take a while.")
 
     board = Chessboard(chess.STARTING_FEN)
+    perft_results = (1, 20, 400, 8902, 197281, 4865609)
 
-    assert board.perft(0) == 1
-    assert board.perft(1) == 20
-    assert board.perft(2) == 400
-    assert board.perft(3) == 8902
-    assert board.perft(4) == 197281
-    assert board.perft(5) == 4865609
+    for i in range(int(run_movegen_test)):
+        assert board.perft(i) == perft_results[i]
 
 
 def test_board_generate_fen():

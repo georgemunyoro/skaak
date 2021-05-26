@@ -2,7 +2,7 @@ import pytest
 
 
 def pytest_addoption(parser):
-    parser.addoption("--run-movegen-test", action="store_true")
+    parser.addoption("--run-movegen-test", action="store")
 
 
 @pytest.fixture(scope="session")
