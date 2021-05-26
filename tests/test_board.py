@@ -1,3 +1,4 @@
+import sys
 import os
 import pytest
 
@@ -111,8 +112,10 @@ def test_board_move():
         assert board.board[move.initial_square] == "."
 
 
-@pytest.mark.skip(reason="This takes quite a while")
-def test_board_move_gen():
+def test_board_move_gen(run_movegen_test):
+    if (not run_movegen_test):
+        pytest.skip("This can take a while.")
+
     board = Chessboard(chess.STARTING_FEN)
 
     assert board.perft(0) == 1
