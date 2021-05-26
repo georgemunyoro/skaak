@@ -11,4 +11,3 @@ def run_movegen_test(request):
     if run_movegen_test_val is None:
         pytest.skip()
     return run_movegen_test_val
-
