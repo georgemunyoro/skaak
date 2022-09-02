@@ -114,14 +114,12 @@ def test_board_move():
         assert board.board[move.initial_square] == "."
 
 
-def test_board_move_gen(run_movegen_test):
-    if not run_movegen_test:
-        pytest.skip("This can take a while.")
-
+@pytest.mark.slow
+def test_board_move_gen():
     board = Chessboard(chess.STARTING_FEN)
     perft_results = (1, 20, 400, 8902, 197281, 4865609)
 
-    for i in range(int(run_movegen_test)):
+    for i in range(int(6)):
         assert board.perft(i) == perft_results[i]
 
 
